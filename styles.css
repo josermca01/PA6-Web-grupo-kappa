@@ -37,6 +37,34 @@
     background-color: rgb(30, 255, 0);
     display: flex;
 }
+.submarino-container{
+    width: 120px;
+    height: 40px;
+    margin: 10px;
+    background-color: rgb(0, 68, 255);
+    display: flex;
+}
+.cruzador-container{
+    width: 120px;
+    height: 40px;
+    margin: 10px;
+    background-color: rgb(89, 0, 255);
+    display: flex;
+}
+.navio-container{
+    width: 160px;
+    height: 40px;
+    margin: 10px;
+    background-color: rgb(255, 72, 0);
+    display: flex;
+}
+.porta-avioes-container{
+    width: 200px;
+    height: 40px;
+    margin: 10px;
+    background-color: rgb(174, 0, 255);
+    display: flex;
+}
 .ship div{
     width: 40px;
     height: 40px;
