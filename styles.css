@@ -22,3 +22,22 @@
     background-color: darkcyan;
     margin: 25px;
 }
+
+.grid-display{
+    width: 400px;
+    height: 400px;
+    background-color:goldenrod;
+    margin: 25px;
+}
+
+.destroyer-container{
+    width: 80px;
+    height: 40px;
+    margin: 10px;
+    background-color: rgb(30, 255, 0);
+    display: flex;
+}
+.ship div{
+    width: 40px;
+    height: 40px;
+}
