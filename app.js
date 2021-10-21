@@ -7,12 +7,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     const submarino = document.querySelector('.submarino-container')
     const cruzador = document.querySelector('.cruzador-container')
     const navio = document.querySelector('.navio-container')
-    const portaavioes = document.querySelector('.porta-avioes-container')
+    const portaavioes = document.querySelector('.portaavioes-container')
     const playersqures = []
     const maquinasquares = []
-
     const tamanho = 10
-
+    let isHorizontal = true
+    const startButton = document.querySelector('#start')
+    const rotateButton = document.querySelector('#rotate')
     //criação do board
     function board(grid,squares){
         for(let i = 0; i<tamanho*tamanho;i++){
@@ -88,4 +89,23 @@ document.addEventListener('DOMContentLoaded',()=>{
       generate(arraybarcos[3])
       generate(arraybarcos[4])
 
+      function rotate() {
+        if (isHorizontal) {
+          destroyer.classList.toggle('destroyer-container-vertical')
+          submarino.classList.toggle('submarino-container-vertical')
+          cruzador.classList.toggle('cruzador-container-vertical')
+          navio.classList.toggle('navio-container-vertical')
+          portaavioes.classList.toggle('portaavioes-container-vertical')
+          isHorizontal = false
+        }
+        if (!isHorizontal) {
+          destroyer.classList.toggle('destroyer-container')
+          submarino.classList.toggle('submarino-container')
+          cruzador.classList.toggle('cruzador-container')
+          navio.classList.toggle('navio-container')
+          portaavioes.classList.toggle('portaavioes-container')
+          isHorizontal = true
+        }
+      }
+      rotateButton.addEventListener('click', rotate)
 })
