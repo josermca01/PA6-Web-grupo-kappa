@@ -1,6 +1,6 @@
 # PA6-Web-grupo-kappa
 
-## Para execução do projeto
+## Guia de instalação do projeto
 
 
 
