@@ -1,7 +1,7 @@
 # PA6-Web-grupo-kappa
 
 ## Guia de instalação do projeto
-Para instalação do projeto, é simples, eis o guia. 
+Para instalação do projeto, segue o guia. 
 <br>
 Clonar o repositorio do projeto.
 - ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
