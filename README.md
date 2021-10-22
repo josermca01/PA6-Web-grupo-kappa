@@ -1,6 +1,6 @@
 # PA6-Web-grupo-kappa
 
-2 Descrição do projeto
+Descrição do projeto
 
 Ao todo o jogo dispõe de quatro grades quadriculadas, duas para cada jogador. Em uma
 grade deverá ser registrado os tiros que o jogador dá ao adversário (grade de ataque) e em
@@ -34,10 +34,10 @@ deles foi abatido; o jogo termina com o último navio de um dos jogadores sendo 
 sendo vitorioso o jogador que conseguir afundar toda a frota de seu oponente primeiro.
 
 
-3 Tecnologias utilizadas
+Tecnologias utilizadas
 
 
-3.1 Desenvolvimento
+Desenvolvimento
 
 
 Para o desenvolvimento de uma aplicação com multi-telas e multi-usuários em uma única
