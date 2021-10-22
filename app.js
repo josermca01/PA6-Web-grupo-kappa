@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       generate(arraybarcos[3])
       generate(arraybarcos[4])
 
+      //função de rotação dos barcos para colocar na grid
       function rotate() {
         if (isHorizontal) {
           destroyer.classList.toggle('destroyer-container-vertical')
@@ -97,6 +98,8 @@ document.addEventListener('DOMContentLoaded',()=>{
           navio.classList.toggle('navio-container-vertical')
           portaavioes.classList.toggle('portaavioes-container-vertical')
           isHorizontal = false
+          console.log(isHorizontal)
+          return
         }
         if (!isHorizontal) {
           destroyer.classList.toggle('destroyer-container')
@@ -105,7 +108,74 @@ document.addEventListener('DOMContentLoaded',()=>{
           navio.classList.toggle('navio-container')
           portaavioes.classList.toggle('portaavioes-container')
           isHorizontal = true
+          console.log(isHorizontal)
+          return
         }
       }
       rotateButton.addEventListener('click', rotate)
+
+
+      ships.forEach(ship=> ship.addEventListener('dragstart',dragStart))
+      playersqures.forEach(square=> square.addEventListener('dragstart',dragStart))
+      playersqures.forEach(square=> square.addEventListener('dragover',dragOver))
+      playersqures.forEach(square=> square.addEventListener('dragenter',dragEnter))
+      playersqures.forEach(square=> square.addEventListener('dragleave',dragLeave))
+      playersqures.forEach(square=> square.addEventListener('drop',dragDrop))
+      playersqures.forEach(square=> square.addEventListener('dragend',dragEnd))
+
+    let selectedShipNameWithIndex
+    let draggedShip
+    let draggedShipLength
+
+    ships.forEach(ship => ship.addEventListener('mousedown', (e) => {
+        selectedShipNameWithIndex = e.target.id
+        // console.log(selectedShipNameWithIndex)
+    }))
+
+    function dragStart() {
+        draggedShip = this
+        draggedShipLength = this.childNodes.length
+        // console.log(draggedShip)
+    }
+
+    function dragOver(e) {
+        e.preventDefault()
+    }
+
+    function dragEnter(e) {
+        e.preventDefault()
+    }
+
+    function dragLeave() {
+        // console.log('drag leave')
+    }
+
+    function dragDrop() {
+        let shipNameWithLastId = draggedShip.lastChild.id
+        let shipClass = shipNameWithLastId.slice(0, -2)
+        console.log(shipClass)
+        let lastShipIndex = parseInt(shipNameWithLastId.substr(-1))
+        let shipLastId = lastShipIndex + parseInt(this.dataset.id)
+        console.log(shipLastId)
+        selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1))
+
+        shipLastId = shipLastId - selectedShipIndex
+        console.log(shipLastId)
+
+        if (isHorizontal) {
+            for (let i = 0; i < draggedShipLength; i++) {
+                playersqures[parseInt(this.dataset.id) - selectedShipIndex + i].classList.add('taken',shipClass)
+            }
+        } else if (!isHorizontal) {
+            for (let i = 0; i < draggedShipLength; i++) {
+                playersqures[parseInt(this.dataset.id) - selectedShipIndex + tamanho*i].classList.add('taken', shipClass)
+            }
+        } else return
+
+        gridpdisplay.removeChild(draggedShip)
+    }
+
+    function dragEnd() {
+        // console.log('dragend')
+    }
 })
