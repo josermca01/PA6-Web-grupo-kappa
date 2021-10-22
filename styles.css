@@ -33,7 +33,7 @@
   margin-right: 8px;
 }
 /* style rotation button */
-.rotation {
+.rotate {
   width: auto;
   display: inline-flex;
   align-items: center;
@@ -44,7 +44,7 @@
   border-radius: 8px;
   cursor: pointer;
 }
-.rotation:hover {
+.rotate:hover {
   border-radius: 8px;
   transform: scale(1.05);
 }
