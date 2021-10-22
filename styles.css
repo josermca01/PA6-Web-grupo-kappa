@@ -1,17 +1,50 @@
+* {
+  margin: 10;
+  padding: 10;
+  box-sizing: border-box;
+}
 .container {
   display: flex;
 }
+.buttons {
+  margin-left: 25px;
+  display: inline-block;
+  align-items: center;
+}
+/* style start button */
 .start {
-  justify-content: center;
   width: 100px;
-  padding: 6px 6px;
+  display: inline-flex;
+  align-items: center;
+  color: #000;
+  background: rgb(13, 148, 13) !important;
+  padding: 0.4rem 0.9rem;
+  border: 3px solid;
   border-radius: 8px;
-  background-color: green;
-  text-align: center;
-  color: white;
   cursor: pointer;
 }
 .start:hover {
+  border-radius: 8px;
+  transform: scale(1.05);
+}
+/* setting size the icon */
+.icon {
+  width: 20px;
+  margin-right: 8px;
+}
+/* style rotation button */
+.rotation {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  color: #000;
+  background: grey !important;
+  padding: 0.4rem 0.9rem;
+  border: 3px solid;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.rotation:hover {
   border-radius: 8px;
   transform: scale(1.05);
 }
@@ -90,22 +123,22 @@
   width: 40px;
   height: 40px;
 }
-.destroyer{
-    background-color: rgb(30, 255, 0);
+.destroyer {
+  background-color: rgb(30, 255, 0);
 }
 
-.submarino{
-    background-color: rgb(0, 68, 255);
+.submarino {
+  background-color: rgb(0, 68, 255);
 }
 
-.cruzador{
-    background-color: rgb(89, 0, 255);
+.cruzador {
+  background-color: rgb(89, 0, 255);
 }
 
-.navio{
-    background-color: rgb(255, 72, 0);
+.navio {
+  background-color: rgb(255, 72, 0);
 }
 
-.portaavioes{
-    background-color: rgb(174, 0, 255);
+.portaavioes {
+  background-color: rgb(174, 0, 255);
 }
