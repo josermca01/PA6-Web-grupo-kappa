@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     let isHorizontal = true
     const startButton = document.querySelector('#start')
     const rotateButton = document.querySelector('#rotate')
+    let isGameOver = true
+    let currentPlayer = 'user'
+    const turnDisplay = document.querySelector('#whose-go')
+    const infoDisplay = document.querySelector('#info')
     //criação do board
     function board(grid,squares){
         for(let i = 0; i<tamanho*tamanho;i++){
@@ -156,9 +160,10 @@ document.addEventListener('DOMContentLoaded',()=>{
         console.log(shipClass)
         let lastShipIndex = parseInt(shipNameWithLastId.substr(-1))
         let shipLastId = lastShipIndex + parseInt(this.dataset.id)
+        let shipLastIdvertical = shipLastId-draggedShipLength+1 + tamanho*draggedShipLength
         console.log(shipLastId)
         selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1))
-
+        console.log(selectedShipIndex)
         shipLastId = shipLastId - selectedShipIndex
 
         
@@ -169,10 +174,18 @@ document.addEventListener('DOMContentLoaded',()=>{
         console.log(shipLastId)
 
         if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
+            for(let i = 0;i < draggedShipLength; i++){
+                if(playersqures[parseInt(shipLastId) - i].classList.contains('taken'))
+                return
+            }
             for (let i = 0; i < draggedShipLength; i++) {
                 playersqures[parseInt(this.dataset.id) - selectedShipIndex + i].classList.add('taken',shipClass)
             }
         } else if (!isHorizontal && !newNotAllowedVertical.includes(shipLastId)) {
+            for(let i = 0;i < draggedShipLength; i++){
+                if(playersqures[parseInt(shipLastIdvertical) - tamanho*i].classList.contains('taken'))
+                return
+            }
             for (let i = 0; i < draggedShipLength; i++) {
                 playersqures[parseInt(this.dataset.id) - selectedShipIndex + tamanho*i].classList.add('taken', shipClass)
             }
@@ -183,5 +196,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     function dragEnd() {
         // console.log('dragend')
+    }
+
+    //Game logic
+    function playGame(){
+        if(isGameOver)
+        return
+        if(currentPlayer === 'user'){
+            turnDisplay.innerHTML = 'Sua vez'
+        }
+        if(currentPlayer === 'computer'){
+            turnDisplay.innerHTML = 'Vez da Maquina'
+        }
+
     }
 })
