@@ -11,10 +11,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     const playersqures = []
     const maquinasquares = []
     const tamanho = 10
+    var contador = 1
     let isHorizontal = true
     const startButton = document.querySelector('#start')
     const rotateButton = document.querySelector('#rotate')
-    let isGameOver = true
+    let isGameOver = false
     let currentPlayer = 'user'
     const turnDisplay = document.querySelector('#whose-go')
     const infoDisplay = document.querySelector('#info')
@@ -157,13 +158,14 @@ document.addEventListener('DOMContentLoaded',()=>{
     function dragDrop() {
         let shipNameWithLastId = draggedShip.lastChild.id
         let shipClass = shipNameWithLastId.slice(0, -2)
-        console.log(shipClass)
+        //console.log(shipClass)
         let lastShipIndex = parseInt(shipNameWithLastId.substr(-1))
         let shipLastId = lastShipIndex + parseInt(this.dataset.id)
-        let shipLastIdvertical = shipLastId-draggedShipLength+1 + tamanho*draggedShipLength
-        console.log(shipLastId)
+        let shipLastIdvertical = shipLastId-(draggedShipLength-1) + tamanho*(draggedShipLength-1)
+        //console.log(shipLastId)
+        //console.log(shipLastIdvertical)
         selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1))
-        console.log(selectedShipIndex)
+        //console.log(selectedShipIndex)
         shipLastId = shipLastId - selectedShipIndex
 
         
@@ -171,7 +173,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         const notAllowedVertical = [99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60]
         let newNotAllowedHorizontal = notAllowedHorizontal.splice(0, 10 * lastShipIndex)
         let newNotAllowedVertical = notAllowedVertical.splice(0, 10 * lastShipIndex)
-        console.log(shipLastId)
+        //console.log(shipLastId)
 
         if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
             for(let i = 0;i < draggedShipLength; i++){
@@ -199,15 +201,131 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
 
     //Game logic
-    function playGame(){
-        if(isGameOver)
+    function playGame() {
+        if (isGameOver) return
+        if (currentPlayer === 'user') {
+          turnDisplay.innerHTML = 'Your Go'
+          maquinasquares.forEach(square => square.addEventListener('click', function(e) {
+            revealSquare(square)
+          }))
+        }
+        if (currentPlayer === 'computer') {
+          turnDisplay.innerHTML = 'Computers Go'
+          setTimeout(computerGo,1)
+        }
+      }
+      startButton.addEventListener('click', playGame)
+    
+      let destroyerCount = 0
+      let submarinoCount = 0
+      let cruzadorCount = 0
+      let navioCount = 0
+      let portaavioesCount = 0
+    
+    
+      function revealSquare(square) {
+        //console.log(contador++)
+        if(square.classList.contains('boom')||square.classList.contains('miss'))
         return
-        if(currentPlayer === 'user'){
-            turnDisplay.innerHTML = 'Sua vez'
+        if (!square.classList.contains('boom')) {
+          if (square.classList.contains('destroyer')) destroyerCount++
+          if (square.classList.contains('submarino')) submarinoCount++
+          if (square.classList.contains('cruzador')) cruzadorCount++
+          if (square.classList.contains('navio')) navioCount++
+          if (square.classList.contains('portaavioes')) portaavioesCount++
         }
-        if(currentPlayer === 'computer'){
-            turnDisplay.innerHTML = 'Vez da Maquina'
+        if (square.classList.contains('taken')) {
+          square.classList.add('boom')
+        } else {
+          square.classList.add('miss')
         }
-
-    }
+        checkForWins()
+        currentPlayer = 'computer'
+        playGame()
+      }
+    
+      let cpuDestroyerCount = 0
+      let cpuSubmarinoCount = 0
+      let cpuCruzadorCount = 0
+      let cpuNavioCount = 0
+      let cpuPortaavioesCount = 0
+    
+    
+      function computerGo() {
+        let random = Math.floor(Math.random() * playersqures.length)
+        if(playersqures[random].classList.contains('boom')||playersqures[random].classList.contains('miss'))
+        setTimeout(computerGo,1)
+        if (!playersqures[random].classList.contains('boom') && playersqures[random].classList.contains('taken')) {
+          playersqures[random].classList.add('boom')
+          //console.log('acertou')
+          if (playersqures[random].classList.contains('destroyer')) cpuDestroyerCount++
+          if (playersqures[random].classList.contains('submarino')) cpuSubmarinoCount++
+          if (playersqures[random].classList.contains('cruzador')) cpuCruzadorCount++
+          if (playersqures[random].classList.contains('navio')) cpuNavioCount++
+          if (playersqures[random].classList.contains('portaavioes')) cpuPortaavioesCount++
+          checkForWins()
+        }
+        else if(!playersqures[random].classList.contains('miss')&&!playersqures[random].classList.contains('taken')){
+            //console.log('errou')
+            playersqures[random].classList.add('miss')
+        }
+        currentPlayer = 'user'
+        turnDisplay.innerHTML = 'Your Go'
+      }
+    
+      function checkForWins() {
+        if (destroyerCount === 2) {
+          infoDisplay.innerHTML = 'voce destruiu o destroyer'
+          destroyerCount = 10
+        }
+        if (submarinoCount === 3) {
+          infoDisplay.innerHTML = 'voce destruiu o submarino'
+          submarinoCount = 10
+        }
+        if (cruzadorCount === 3) {
+          infoDisplay.innerHTML = 'voce destruiu o cruzador'
+          cruzadorCount = 10
+        }
+        if (navioCount === 4) {
+          infoDisplay.innerHTML = 'voce destruiu o navio'
+          navioCount = 10
+        }
+        if (portaavioesCount === 5) {
+          infoDisplay.innerHTML = 'voce destruiu o portaavioes'
+          portaavioesCount = 10
+        }
+        if (cpuDestroyerCount === 2) {
+          infoDisplay.innerHTML = 'o seu Destroyer afundou'
+          destroyerCount = 10
+        }
+        if (cpuSubmarinoCount === 3) {
+          infoDisplay.innerHTML = 'o seu submarino afundou'
+          cpuSubmarinoCount = 10
+        }
+        if (cpuCruzadorCount === 3) {
+          infoDisplay.innerHTML = 'o seu cruzador afundou'
+          cpuCruzadorCount = 10
+        }
+        if (cpuNavioCount === 4) {
+          infoDisplay.innerHTML = 'o seu navio afundou'
+          cpuNavioCount = 10
+        }
+        if (cpuPortaavioesCount === 5) {
+          infoDisplay.innerHTML = 'o seu portaavioes afundou'
+          cpuPortaavioesCount = 10
+        }
+        if ((destroyerCount + submarinoCount + cruzadorCount + navioCount + portaavioesCount) === 50) {
+          infoDisplay.innerHTML = "YOU WIN"
+          gameOver()
+        }
+        if ((cpuDestroyerCount + cpuSubmarinoCount + cpuCruzadorCount + cpuNavioCount + cpuPortaavioesCount) === 50) {
+          infoDisplay.innerHTML = "COMPUTER WINS"
+          gameOver()
+        }
+      }
+    
+      function gameOver() {
+        isGameOver = true
+        startButton.removeEventListener('click', playGame)
+      }
 })
