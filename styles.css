@@ -48,6 +48,10 @@
   border-radius: 8px;
   transform: scale(1.05);
 }
+
+.nome-campo{
+  text-align: center;
+}
 .grid-usuario {
   width: 400px;
   height: 400px;
@@ -59,6 +63,7 @@
 .grid div {
   width: 40px;
   height: 40px;
+  border: 1px solid chocolate !important;
 }
 .grid-maquina {
   width: 400px;
@@ -67,6 +72,10 @@
   flex-wrap: wrap;
   background-color: darkcyan;
   margin: 25px;
+}
+
+.hidden {
+  background-color: aqua !important;
 }
 
 .grid-display {
@@ -164,6 +173,7 @@
   width: 40px;
   height: 40px;
 }
+
 .destroyer {
   background-color: rgb(30, 255, 0);
 }
