@@ -57,25 +57,25 @@
   height: 400px;
   display: flex;
   flex-wrap: wrap;
-  background-color: aqua;
+  background-color: white;
   margin: 25px;
 }
 .grid div {
   width: 40px;
   height: 40px;
-  border: 1px solid chocolate !important;
+  border: 1px solid black !important;
 }
 .grid-maquina {
   width: 400px;
   height: 400px;
   display: flex;
   flex-wrap: wrap;
-  background-color: darkcyan;
+  background-color: white;
   margin: 25px;
 }
 
 .hidden {
-  background-color: aqua !important;
+  background-color: white !important;
 }
 
 .grid-display {
@@ -197,5 +197,5 @@
   background-color: red;
 }
 .miss{
-  background-color: #000;
+  background-color: aqua;
 }
