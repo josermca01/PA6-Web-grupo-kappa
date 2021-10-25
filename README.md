@@ -76,6 +76,6 @@ Para o lado do servidor utilizaremos:
 
 ### Tecnologias ainda não implementadas:
 
--Node.js
+- Node.js
 
--Sockts.io
+- Sockts.io
