@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             for(let i = 0;i < draggedShipLength; i++){
               //console.log(i+'quadrado')
               //console.log(Math.abs(tamanho*i-parseInt(shipLastId)+1))
-                if(playersqures[Math.abs(tamanho*i-parseInt(shipLastId))].classList.contains('taken'))
+                if(playersqures[parseInt(this.dataset.id - selectedShipIndex*tamanho) + (tamanho*i)].classList.contains('taken'))
                 return
             }
             for (let i = 0; i < draggedShipLength; i++) {
