@@ -74,7 +74,7 @@ Para o lado do servidor utilizaremos:
 - Node.js, um ambiente de execução em JavaScript voltada ao lado de servidor.
 
 
-# Tecnologias ainda não implementadas:
+### Tecnologias ainda não implementadas:
 
 -Node.js
 -Sockts.io
