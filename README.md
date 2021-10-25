@@ -7,7 +7,7 @@ Clonar o repositorio do projeto.
 - ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
 <br>
 
-Quando instalado, ao abrir o arquivo index.html
+Quando instalado, abrir o arquivo index.html
 
 ## Descrição do projeto
 
