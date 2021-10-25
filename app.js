@@ -219,6 +219,8 @@ document.addEventListener('DOMContentLoaded',()=>{
           setTimeout(computerGo,1000)
         }
         gridpdisplay.remove()
+        rotateButton.remove()
+        document.getElementById('start').style.display='none'
       }
       startButton.addEventListener('click', playGame)
     
@@ -339,6 +341,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         isGameOver = true
         startButton.removeEventListener('click', playGame)
         startButton.innerHTML = 'Recomeçar'
+        document.getElementById('start').style.display='block'
         startButton.addEventListener('click', reloadGame)
       }
 })
