@@ -157,23 +157,25 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     function dragDrop() {
         let shipNameWithLastId = draggedShip.lastChild.id
+        //console.log('shipNameWithLastId   '  + shipNameWithLastId)
         let shipClass = shipNameWithLastId.slice(0, -2)
         //console.log(shipClass)
         let lastShipIndex = parseInt(shipNameWithLastId.substr(-1))
+        //console.log('lastShipIndex   '+  lastShipIndex)
         let shipLastId = lastShipIndex + parseInt(this.dataset.id)
-        let shipLastIdvertical = shipLastId-(draggedShipLength-1) + tamanho*(draggedShipLength-1)
-        //console.log(shipLastId)
-        //console.log(shipLastIdvertical)
+        //console.log(lastShipIndex)
         selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1))
         //console.log(selectedShipIndex)
         shipLastId = shipLastId - selectedShipIndex
+        //console.log('shipLastId   '+shipLastId)
 
         
         const notAllowedHorizontal = [0,10,20,30,40,50,60,70,80,90,1,11,21,31,41,51,61,71,81,91,2,22,32,42,52,62,72,82,92,3,13,23,33,43,53,63,73,83,93]
-        const notAllowedVertical = [99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60]
         let newNotAllowedHorizontal = notAllowedHorizontal.splice(0, 10 * lastShipIndex)
-        let newNotAllowedVertical = notAllowedVertical.splice(0, 10 * lastShipIndex)
-        //console.log(shipLastId)
+        //console.log(this.dataset.id)
+        let podeColocarNavioParaBaixo =  ((draggedShipLength - (selectedShipIndex +1)) * tamanho) + parseInt(this.dataset.id) < 100
+
+        let podeColocarNavioParaCima = parseInt(this.dataset.id) - (selectedShipIndex * tamanho) > 0 
 
         if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
             for(let i = 0;i < draggedShipLength; i++){
@@ -183,13 +185,15 @@ document.addEventListener('DOMContentLoaded',()=>{
             for (let i = 0; i < draggedShipLength; i++) {
                 playersqures[parseInt(this.dataset.id) - selectedShipIndex + i].classList.add('taken',shipClass)
             }
-        } else if (!isHorizontal && !newNotAllowedVertical.includes(shipLastId)) {
+        } else if (!isHorizontal && podeColocarNavioParaBaixo && podeColocarNavioParaCima) {
             for(let i = 0;i < draggedShipLength; i++){
-                if(playersqures[parseInt(shipLastIdvertical) - tamanho*i].classList.contains('taken'))
+              //console.log(i+'quadrado')
+              //console.log(Math.abs(tamanho*i-parseInt(shipLastId)+1))
+                if(playersqures[Math.abs(tamanho*i-parseInt(shipLastId))].classList.contains('taken'))
                 return
             }
             for (let i = 0; i < draggedShipLength; i++) {
-                playersqures[parseInt(this.dataset.id) - selectedShipIndex + tamanho*i].classList.add('taken', shipClass)
+                playersqures[parseInt(this.dataset.id - selectedShipIndex*tamanho) + (tamanho*i)].classList.add('taken', shipClass)
             }
         } else return
 
