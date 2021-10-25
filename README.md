@@ -6,13 +6,8 @@ Para instalação do projeto, segue o guia.
 Clonar o repositorio do projeto.
 - ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
 <br>
-No VSCode instalar a extensão Live Server
 
-![image](https://user-images.githubusercontent.com/70330647/138533192-432f9812-5114-42bf-9225-a0e7634cc09a.png)
-<br>
-Quando instalado, ao abrir o arquivo index.html executar os seguintes comandos em sequência no teclado.
-
-- ALT+L e ALT+O (executando o index.html com a extenção Live Server)
+Quando instalado, ao abrir o arquivo index.html
 
 ## Descrição do projeto
 
