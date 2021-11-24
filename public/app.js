@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     let currentPlayer = 'user'
     const turnDisplay = document.querySelector('#whose-go')
     const infoDisplay = document.querySelector('#info')
+
+    const socket = io()
+
+
     //criação do board
     function board(grid,squares,visible){
         for(let i = 0; i<tamanho*tamanho;i++){
