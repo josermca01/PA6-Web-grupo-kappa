@@ -20,7 +20,88 @@ document.addEventListener('DOMContentLoaded',()=>{
     const turnDisplay = document.querySelector('#whose-go')
     const infoDisplay = document.querySelector('#info')
 
-    const socket = io()
+    const singlePlayerButton = document.querySelector('#singlePlayerButton')
+    const multiPlayerButton = document.querySelector('#multiPlayerButton')
+
+    let gameMode = ""
+    let playerNum = 0
+    let ready = false
+    let enemyReady = false
+    let allShipsPlaced = false
+    let shootFired = -1
+
+    singlePlayerButton.addEventListener('click',startSinglePlayer)
+    multiPlayerButton.addEventListener('click',startMultiPlayer)
+
+    
+
+    
+
+    function startMultiPlayer (){
+      gameMode = "multiPlayer"
+      const socket = io()
+      socket.on('player-number',num =>{
+        if(num===-1){
+          infoDisplay.innerHTML = "Servidor cheio, espere a partida atual acabar para tentar jogar"
+        }
+        else{
+          playerNum = parseInt(num)
+          if(playerNum===1)currentPlayer="enemy"
+
+          socket.emit('check-players')
+        }
+      })
+
+      socket.on('player-connection',num =>{
+      playerConnectedOrDisconnected(num)
+    })
+    
+    socket.on('enemy-ready',num=>{
+      enemyReady = true
+      playerReady(num)
+      if(ready)playGameMulti
+    })
+
+    socket.on('check-players',players =>{
+      players.forEach((p,i)=>{
+        if(p.connected)playerConnectedOrDisconnected(i)
+        if(p.ready){
+          playerReady(i)
+          if(i!==playerNum) enemyReady = true
+        }
+      })
+    })
+
+
+    startButton.addEventListener('click',()=>{
+      if(allShipsPlaced) playGameMulti(socket)
+      else infoDisplay.innerHTML = "posicione todos os barcos"
+    })
+
+    function playerConnectedOrDisconnected(num){
+      let player = `.p${parseInt(num)+1}`
+      document.querySelector(`${player} .connected span`).classList.toggle('green')
+      if(parseInt(num)===playerNum)
+      document.querySelector(player).style.fontWeight = 'bold'
+
+    }
+
+    }
+
+
+
+    function startSinglePlayer(){
+      gameMode ="singlePlayer"
+
+      generate(arraybarcos[0])
+      generate(arraybarcos[1])
+      generate(arraybarcos[2])
+      generate(arraybarcos[3])
+      generate(arraybarcos[4])
+      
+      startButton.addEventListener('click', playGameSingle)
+
+    }
 
 
     //criação do board
@@ -93,11 +174,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         else generate(ship)
       }
 
-      generate(arraybarcos[0])
-      generate(arraybarcos[1])
-      generate(arraybarcos[2])
-      generate(arraybarcos[3])
-      generate(arraybarcos[4])
+      
 
       //função de rotação dos barcos para colocar na grid
       function rotate() {
@@ -203,14 +280,40 @@ document.addEventListener('DOMContentLoaded',()=>{
         } else return
 
         gridpdisplay.removeChild(draggedShip)
+
+        if(!gridpdisplay.querySelector('.ship'))
+        allShipsPlaced=true
     }
 
     function dragEnd() {
         // console.log('dragend')
     }
 
+    function playGameMulti(socket){
+      if(isGameOver) return
+      if(!ready){
+        socket.emit('player-ready')
+        ready = true
+        playerReady(playerNum)
+      }
+      if(enemyReady){
+        if(currentPlayer==='user'){
+          turnDisplay.innerHTML='Sua vez'
+        }
+        if(currentPlayer==='enemy'){
+          turnDisplay.innerHTML='Vez do adversario'
+        }
+      }
+    }
+
+    function playerReady(num){
+      let player = `.p${parseInt(num)+1}`
+      document.querySelector(`${player} .ready span`).classList.toggle('green')
+    }
+
+
     //Game logic
-    function playGame() {
+    function playGameSingle() {
         if (isGameOver) return
         if (currentPlayer === 'user') {
           turnDisplay.innerHTML = 'Sua vez'
@@ -226,7 +329,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         rotateButton.remove()
         document.getElementById('start').style.display='none'
       }
-      startButton.addEventListener('click', playGame)
     
       let destroyerCount = 0
       let submarinoCount = 0
@@ -254,7 +356,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
         checkForWins()
         currentPlayer = 'computer'
-        playGame()
+        playGameSingle()
       }
     
       let cpuDestroyerCount = 0
@@ -343,7 +445,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     
       function gameOver() {
         isGameOver = true
-        startButton.removeEventListener('click', playGame)
+        startButton.removeEventListener('click', playGameSingle)
         startButton.innerHTML = 'Recomeçar'
         document.getElementById('start').style.display='block'
         startButton.addEventListener('click', reloadGame)
