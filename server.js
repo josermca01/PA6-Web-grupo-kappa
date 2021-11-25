@@ -24,13 +24,15 @@ io.on('connection',socket=>{
 
     socket.emit('player-number',playerIndex)
 
+    console.log(`Player ${playerIndex} has connected`)
     if(playerIndex===-1)
     return
     connections[playerIndex]=false
 
     socket.broadcast.emit('player-connection',playerIndex)
 
-    socket.on('disconnetc',()=>{
+    socket.on('disconnect',()=>{
+        console.log(`Player ${playerIndex} disconnected`)
         connections[playerIndex]=null
         socket.broadcast.emit('player-connection',playerIndex)
     })
@@ -43,7 +45,7 @@ io.on('connection',socket=>{
     socket.on('check-players',()=>{
         const players =[]
         for(const i in connections){
-            connections[i]===null? players.push({connected: false,ready:false}):
+            connections[i] === null ? players.push({connected: false,ready:false}):
             players.push({connected:true,ready:connections[i]})
         }
         socket.emit('check-players',players)

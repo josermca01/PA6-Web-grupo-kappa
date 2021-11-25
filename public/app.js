@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       })
 
       socket.on('player-connection',num =>{
+      console.log(`Player number ${num} has connected or disconnected`)
       playerConnectedOrDisconnected(num)
     })
     
