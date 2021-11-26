@@ -5,9 +5,16 @@ Para instalação do projeto, segue o guia.
 <br>
 Clonar o repositorio do projeto.
 - ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
-<br>
 
-Quando instalado, abrir o arquivo index.html
+Caso não tenha Nodejs instale.
+Link para download do Nodejs (instalar a versão LTS)
+- ```https://nodejs.org/en/download/ ```
+
+Com o repositorio aberto no Vscode abrir um novo terminal e executar o seguinte comando
+- ```npm run dev```
+
+Feito isso o servidor do jogo irá abrir na porta localhost:3000
+<br>
 
 ## Descrição do projeto
 
