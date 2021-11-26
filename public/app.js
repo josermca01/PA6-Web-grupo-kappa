@@ -37,9 +37,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     
 
+    //Função para iniciar o modo multiplayer
     function startMultiPlayer (){
       gameMode = "multiPlayer"
       const socket = io()
+      //Pega com o servidor o numero do jogador e checa se esta lotado
       socket.on('player-number',num =>{
         if(num===-1){
           infoDisplay.innerHTML = "Servidor cheio, espere a partida atual acabar para tentar jogar"
@@ -52,17 +54,20 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
       })
 
+      //Pega com o servidor qual o jogador que conectou
       socket.on('player-connection',num =>{
       console.log(`Player number ${num} has connected or disconnected`)
       playerConnectedOrDisconnected(num)
     })
     
+    //Verifica se o inimigo esta pronto para jogar
     socket.on('enemy-ready',num=>{
       enemyReady = true
       playerReady(num)
       if(ready)playGameMulti
     })
 
+    //Verifica se todos os jogadores estão prontos 
     socket.on('check-players',players =>{
       players.forEach((p,i)=>{
         if(p.connected)playerConnectedOrDisconnected(i)
@@ -74,11 +79,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     })
 
 
+    //Só começa o jogo se todos os barcos estiverem posicionados
     startButton.addEventListener('click',()=>{
       if(allShipsPlaced) playGameMulti(socket)
       else infoDisplay.innerHTML = "posicione todos os barcos"
     })
 
+    //Forma de verificar os tiros de cada jogador
     maquinasquares.forEach(square =>{
       square.addEventListener('click',()=>{
         if(currentPlayer === 'user' && ready && enemyReady){
@@ -88,6 +95,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       })
     })
 
+    //Pega com o servidor qual jogador atirou e em qual posição
     socket.on('fire',id =>{
       enemyGo(id)
       const square = playersqures[id]
@@ -95,12 +103,14 @@ document.addEventListener('DOMContentLoaded',()=>{
       playGameMulti(socket)
     })
 
+    //Pega com o servidor qual a posição do seu campo sofreu o ataque
     socket.on('fire-reply',classList =>{
       revealSquare(classList)
       playGameMulti(socket)
     })
 
 
+    //Verifica as conecxões do servidor e indica qual jogador conectou
     function playerConnectedOrDisconnected(num){
       let player = `.p${parseInt(num)+1}`
       document.querySelector(`${player} .connected span`).classList.toggle('green')
@@ -113,6 +123,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 
+    //Função para modo SinglePlayer
     function startSinglePlayer(){
       gameMode ="singlePlayer"
 
@@ -312,7 +323,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         // console.log('dragend')
     }
 
-    //função para multiplayer
+    //função para os turnos do multiplayer
     function playGameMulti(socket){
       if(isGameOver) return
       if(!ready){
@@ -334,7 +345,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       }
     }
 
-    //função para multiplayer
+    //Função para indicar se o jogador está pronto para o jogo ou não
     function playerReady(num){
       let player = `.p${parseInt(num)+1}`
       document.querySelector(`${player} .ready span`).classList.toggle('green')
