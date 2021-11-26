@@ -3,18 +3,33 @@
 ## Guia de instalação do projeto
 Para instalação do projeto, segue o guia. 
 <br>
-Clonar o repositorio do projeto.
-- ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
-
 Caso não tenha Nodejs instale.
 Link para download do Nodejs (instalar a versão LTS)
 - ```https://nodejs.org/en/download/ ```
 
-Com o repositorio aberto no Vscode abrir um novo terminal e executar o seguinte comando
+Clonar o repositorio do projeto.
+- ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
+
+Tendo feito a clonagem abra o Vscode na pasta PA6-Web-grupo-kappa
+
+Com a pasta aberta no Vscode abrir um novo terminal e executar o seguinte comando
 - ```npm run dev```
 
 Feito isso o servidor do jogo irá abrir na porta localhost:3000
 <br>
+
+
+## Acessando o multiplayer 
+
+Após entrar em localhost:3000 existirá 2 modos de jogo:
+
+- SinglePlayer
+- Multiplayer
+
+O modo SinglePlayer é possivel jogar contra o computador que jogar de forma aleatória
+
+O modo Multiplayer é possivel jogar contra outro jogador, o qual possue capacidade maxima de 2 jogadores, assim fazendo com que um terceiro jogador tenha que esperar algum dos 2 sair da sala
+
 
 ## Descrição do projeto
 
