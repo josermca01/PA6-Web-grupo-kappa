@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     let ready = false
     let enemyReady = false
     let allShipsPlaced = false
-    let shootFired = -1
+    let shotFired = -1
 
     singlePlayerButton.addEventListener('click',startSinglePlayer)
     multiPlayerButton.addEventListener('click',startMultiPlayer)
@@ -78,6 +78,28 @@ document.addEventListener('DOMContentLoaded',()=>{
       if(allShipsPlaced) playGameMulti(socket)
       else infoDisplay.innerHTML = "posicione todos os barcos"
     })
+
+    maquinasquares.forEach(square =>{
+      square.addEventListener('click',()=>{
+        if(currentPlayer === 'user' && ready && enemyReady){
+          shotFired=square.dataset.id
+          socket.emit('fire',shotFired)
+        }
+      })
+    })
+
+    socket.on('fire',id =>{
+      enemyGo(id)
+      const square = playersqures[id]
+      socket.emit('fire-reply',square.classList)
+      playGameMulti(socket)
+    })
+
+    socket.on('fire-reply',classList =>{
+      revealSquare(classList)
+      playGameMulti(socket)
+    })
+
 
     function playerConnectedOrDisconnected(num){
       let player = `.p${parseInt(num)+1}`
@@ -290,12 +312,17 @@ document.addEventListener('DOMContentLoaded',()=>{
         // console.log('dragend')
     }
 
+    //função para multiplayer
     function playGameMulti(socket){
       if(isGameOver) return
       if(!ready){
         socket.emit('player-ready')
         ready = true
         playerReady(playerNum)
+      }
+      if(ready&&enemyReady){
+        gridpdisplay.remove()
+        rotateButton.remove()
       }
       if(enemyReady){
         if(currentPlayer==='user'){
@@ -307,6 +334,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       }
     }
 
+    //função para multiplayer
     function playerReady(num){
       let player = `.p${parseInt(num)+1}`
       document.querySelector(`${player} .ready span`).classList.toggle('green')
@@ -319,12 +347,13 @@ document.addEventListener('DOMContentLoaded',()=>{
         if (currentPlayer === 'user') {
           turnDisplay.innerHTML = 'Sua vez'
           maquinasquares.forEach(square => square.addEventListener('click', function(e) {
-            revealSquare(square)
+            shotFired = square.dataset.id
+            revealSquare(square.classList)
           }))
         }
-        if (currentPlayer === 'computer') {
+        if (currentPlayer === 'enemy') {
           turnDisplay.innerHTML = 'Vez do computador'
-          setTimeout(computerGo,1000)
+          setTimeout(enemyGo,1000)
         }
         gridpdisplay.remove()
         rotateButton.remove()
@@ -338,25 +367,28 @@ document.addEventListener('DOMContentLoaded',()=>{
       let portaavioesCount = 0
     
     
-      function revealSquare(square) {
+      function revealSquare(classList) {
+        const enemySquare = gridmaquina.querySelector(`div[data-id='${shotFired}']`)
+        const obj = Object.values(classList)
         //console.log(contador++)
-        if(square.classList.contains('boom')||square.classList.contains('miss'))
+        if(enemySquare.classList.contains('boom')||enemySquare.classList.contains('miss'))
         return
-        if (!square.classList.contains('boom')) {
-          if (square.classList.contains('destroyer')) destroyerCount++
-          if (square.classList.contains('submarino')) submarinoCount++
-          if (square.classList.contains('cruzador')) cruzadorCount++
-          if (square.classList.contains('navio')) navioCount++
-          if (square.classList.contains('portaavioes')) portaavioesCount++
+        if (!enemySquare.classList.contains('boom')&&currentPlayer==='user'&&!isGameOver) {
+          if (obj.includes('destroyer')) destroyerCount++
+          if (obj.includes('submarino')) submarinoCount++
+          if (obj.includes('cruzador')) cruzadorCount++
+          if (obj.includes('navio')) navioCount++
+          if (obj.includes('portaavioes')) portaavioesCount++
         }
-        if(square.classList.contains('hidden')) square.classList.remove('hidden')
-        if (square.classList.contains('taken')) {
-          square.classList.add('boom')
+        if(enemySquare.classList.contains('hidden')) enemySquare.classList.remove('hidden')
+        if (obj.includes('taken')) {
+          enemySquare.classList.add('boom')
         } else {
-          square.classList.add('miss')
+          enemySquare.classList.add('miss')
         }
         checkForWins()
-        currentPlayer = 'computer'
+        currentPlayer = 'enemy'
+        if(gameMode==='singlePlayer')
         playGameSingle()
       }
     
@@ -367,23 +399,24 @@ document.addEventListener('DOMContentLoaded',()=>{
       let cpuPortaavioesCount = 0
     
     
-      function computerGo() {
-        let random = Math.floor(Math.random() * playersqures.length)
-        if(playersqures[random].classList.contains('boom')||playersqures[random].classList.contains('miss'))
-        setTimeout(computerGo,1000)
-        if (!playersqures[random].classList.contains('boom') && playersqures[random].classList.contains('taken')) {
-          playersqures[random].classList.add('boom')
+      function enemyGo(square) {
+        if(gameMode==='singlePlayer')
+        square = Math.floor(Math.random() * playersqures.length)
+        if(playersqures[square].classList.contains('boom')||playersqures[square].classList.contains('miss'))
+        setTimeout(enemyGo,1000)
+        if (!playersqures[square].classList.contains('boom') && playersqures[square].classList.contains('taken')) {
+          playersqures[square].classList.add('boom')
           //console.log('acertou')
-          if (playersqures[random].classList.contains('destroyer')) cpuDestroyerCount++
-          if (playersqures[random].classList.contains('submarino')) cpuSubmarinoCount++
-          if (playersqures[random].classList.contains('cruzador')) cpuCruzadorCount++
-          if (playersqures[random].classList.contains('navio')) cpuNavioCount++
-          if (playersqures[random].classList.contains('portaavioes')) cpuPortaavioesCount++
+          if (playersqures[square].classList.contains('destroyer')) cpuDestroyerCount++
+          if (playersqures[square].classList.contains('submarino')) cpuSubmarinoCount++
+          if (playersqures[square].classList.contains('cruzador')) cpuCruzadorCount++
+          if (playersqures[square].classList.contains('navio')) cpuNavioCount++
+          if (playersqures[square].classList.contains('portaavioes')) cpuPortaavioesCount++
           checkForWins()
         }
-        else if(!playersqures[random].classList.contains('miss')&&!playersqures[random].classList.contains('taken')){
+        else if(!playersqures[square].classList.contains('miss')&&!playersqures[square].classList.contains('taken')){
             //console.log('errou')
-            playersqures[random].classList.add('miss')
+            playersqures[square].classList.add('miss')
         }
         currentPlayer = 'user'
         turnDisplay.innerHTML = 'Sua vez'
@@ -435,7 +468,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           gameOver()
         }
         if ((cpuDestroyerCount + cpuSubmarinoCount + cpuCruzadorCount + cpuNavioCount + cpuPortaavioesCount) === 50) {
-          infoDisplay.innerHTML = "O COMPUTADOR VENCEU"
+          infoDisplay.innerHTML = "O INIMIGO VENCEU"
           gameOver()
         }
       }
@@ -447,6 +480,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       function gameOver() {
         isGameOver = true
         startButton.removeEventListener('click', playGameSingle)
+        startButton.removeEventListener('click', playGameMulti)
         startButton.innerHTML = 'Recomeçar'
         document.getElementById('start').style.display='block'
         startButton.addEventListener('click', reloadGame)

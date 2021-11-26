@@ -50,4 +50,16 @@ io.on('connection',socket=>{
         }
         socket.emit('check-players',players)
     })
+
+    socket.on('fire',id =>{
+        console.log(`Ataque do player ${playerIndex} na posiçao`,id)
+        socket.broadcast.emit('fire',id)
+    })
+
+    socket.on('fire-reply',square=>{
+        console.log(square)
+        socket.broadcast.emit('fire-reply',square)
+    })
+
+    
 })
