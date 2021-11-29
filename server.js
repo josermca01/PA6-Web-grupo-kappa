@@ -7,68 +7,83 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
-app.use(express.static(path.join(__dirname,"public")))
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")))
 
-server.listen(PORT,()=> console.log(`Server rodando na porta localhost:${PORT}`))
+// Start server
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
-//Conecxões do servidor
-const connections =[null,null]
-io.on('connection',socket=>{
-    let playerIndex = -1
-    for(const i in connections){
-        if(connections[i]===null){
-            playerIndex=i
-            break
-        }
+// Pega conexão com o web client
+const connections = [null, null]
 
+io.on('connection', socket => {
+  // console.log('New WS Connection')
+
+  // Encontra um numero para o player
+  let playerIndex = -1;
+  for (const i in connections) {
+    if (connections[i] === null) {
+      playerIndex = i
+      break
     }
+  }
 
-    //Passa para o app qual o numero do jogador que conectou
-    socket.emit('player-number',playerIndex)
-    //Indica qual jogador conectou no terminal
-    console.log(`Player ${playerIndex} has connected`)
+  // Informa para o servidor qual o numero do jogador
+  socket.emit('player-number', playerIndex)
 
-    //Para impedir de ter mais de 2 jogadores conectados
-    if(playerIndex===-1)
-    return
-    connections[playerIndex]=false
-    //Passa para o app qual o jogador conectou
-    socket.broadcast.emit('player-connection',playerIndex)
+  console.log(`Player ${playerIndex} has connected`)
 
-    //Abre vaga de quem desconectou do jogo
-    socket.on('disconnect',()=>{
-        console.log(`Player ${playerIndex} disconnected`)
-        connections[playerIndex]=null
-        socket.broadcast.emit('player-connection',playerIndex)
-    })
+  // Ignora player 3
+  if (playerIndex === -1) return
 
-    //Verifica se o jogador está pronto e informa para todos
-    socket.on('player-ready',()=>{
-        socket.broadcast.emit('enemy-ready',playerIndex)
-        connections[playerIndex]=true
-    })
+  connections[playerIndex] = false
 
-    //Verifica se o jogador está pronto e informa para todos
-    socket.on('check-players',()=>{
-        const players =[]
-        for(const i in connections){
-            connections[i] === null ? players.push({connected: false,ready:false}):
-            players.push({connected:true,ready:connections[i]})
-        }
-        socket.emit('check-players',players)
-    })
+  // Informa a todos qual o numero do jogador que conectou
+  socket.broadcast.emit('player-connection', playerIndex)
 
-    //Verifica onde o jogador atirou 
-    socket.on('fire',id =>{
-        console.log(`Ataque do player ${playerIndex} na posiçao`,id)
-        socket.broadcast.emit('fire',id)
-    })
+  // lida com Diconnect
+  socket.on('disconnect', () => {
+    console.log(`Player ${playerIndex} disconnected`)
+    connections[playerIndex] = null
+    //Informa a todos qual o numero do jogador que desconectou
+    socket.broadcast.emit('player-connection', playerIndex)
+  })
 
-    //Verifica qual a posição o jogador recebeu o ataque
-    socket.on('fire-reply',square=>{
-        console.log(square)
-        socket.broadcast.emit('fire-reply',square)
-    })
+  // No preparo
+  socket.on('player-ready', () => {
+    socket.broadcast.emit('enemy-ready', playerIndex)
+    connections[playerIndex] = true
+  })
 
-    
+  // Checa conexão dos players 
+  socket.on('check-players', () => {
+    const players = []
+    for (const i in connections) {
+      connections[i] === null ? players.push({connected: false, ready: false}) : players.push({connected: true, ready: connections[i]})
+    }
+    socket.emit('check-players', players)
+  })
+
+  // Tiro recebido
+  socket.on('fire', id => {
+    console.log(`Shot fired from ${playerIndex}`, id)
+
+    // Passa o turno para o outro player
+    socket.broadcast.emit('fire', id)
+  })
+
+  // Resposta do player que recebeu o ultimo tiro
+  socket.on('fire-reply', square => {
+    console.log(square)
+
+    // Volta o turno para o outro player
+    socket.broadcast.emit('fire-reply', square)
+  })
+
+  // Timeout connection
+  setTimeout(() => {
+    connections[playerIndex] = null
+    socket.emit('timeout')
+    socket.disconnect()
+  }, 600000) // 10 minutos por player e por turno
 })
