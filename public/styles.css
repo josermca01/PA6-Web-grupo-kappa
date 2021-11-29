@@ -6,26 +6,66 @@
 .container {
   display: flex;
 }
-.buttons {
-  margin-left: 25px;
-  display: inline-block;
+/* style buttons */
+
+button {
+  border-radius: 8px;
+  padding: 0.6em;
+  line-height: 24px;
   align-items: center;
 }
-/* style start button */
-.start {
+#singlePlayerButton {
   width: 100px;
-  display: inline-flex;
   align-items: center;
-  color: #000;
-  background: rgb(13, 148, 13) !important;
-  padding: 0.4rem 0.9rem;
+  color: #fff;
+  background: #65c7f7 !important;
   border: 3px solid;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
 }
-.start:hover {
+#singlePlayerButton:hover {
   border-radius: 8px;
-  transform: scale(1.05);
+  background: #65c7f7 !important;
+  opacity: 0.6;
+}
+#multiPlayerButton {
+  width: 100px;
+  align-items: center;
+  color: #fff;
+  background: #0052d4 !important;
+  border: 3px solid;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#multiPlayerButton:hover {
+  background: #0052d4 !important;
+  opacity: 0.6;
+}
+#start {
+  width: 100px;
+  align-items: center;
+  color: #fff;
+  background: rgb(13, 148, 13) !important;
+  border: 3px solid;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#start:hover {
+  border-radius: 8px;
+  background: rgb(13, 148, 13, 0.7) !important;
+}
+#rotate {
+  width: 100px;
+  align-items: center;
+  color: #fff;
+  background: rgb(72, 79, 80) !important;
+  border: 3px solid;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#rotate:hover {
+  border-radius: 8px;
+  background: rgba(72, 79, 80, 0.6) !important;
 }
 /* setting size the icon */
 .icon {
@@ -33,23 +73,8 @@
   margin-right: 8px;
 }
 /* style rotation button */
-.rotate {
-  width: auto;
-  display: inline-flex;
-  align-items: center;
-  color: #000;
-  background: grey !important;
-  padding: 0.4rem 0.9rem;
-  border: 3px solid;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.rotate:hover {
-  border-radius: 8px;
-  transform: scale(1.05);
-}
 
-.nome-campo{
+.nome-campo {
   text-align: center;
 }
 .grid-usuario {
@@ -193,23 +218,24 @@
 .portaavioes {
   background-color: rgb(174, 0, 255);
 }
-.boom{
+.boom {
   background-color: red;
 }
-.miss{
+.miss {
   background-color: aqua;
 }
-.connected,.ready{
+.connected,
+.ready {
   font-weight: normal;
 }
 
 .connected span,
-.ready span{
+.ready span {
   display: inline-block;
   width: 1rem;
   height: 1rem;
   background-color: red;
 }
-span.green{
+span.green {
   background-color: green;
 }
