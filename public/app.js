@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // NUmero do jogador
     socket.on('player-number', num => {
       if (num === -1) {
-        infoDisplay.innerHTML = "Sorry, the server is full"
+        infoDisplay.innerHTML = "Servidor lotado! Aguarde para jogar"
       } else {
         playerNum = parseInt(num)
         if(playerNum === 1) currentPlayer = "enemy"
