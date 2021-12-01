@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botão de preparo
     startButton.addEventListener('click', () => {
       if(allShipsPlaced) playGameMulti(socket)
-      else infoDisplay.innerHTML = "Please place all ships"
+      else infoDisplay.innerHTML = "Posicione todos os navios antes de começar"
     })
 
     // Setup event de tiro
@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     generate(shipArray[4])
 
     startButton.addEventListener('click', () => {
+      displayGrid.style.display = 'none'
       setupButtons.style.display = 'none'
       playGameSingle()
     })
