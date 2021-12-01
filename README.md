@@ -10,10 +10,15 @@ Link para download do Nodejs (instalar a versão LTS)
 Clonar o repositorio do projeto.
 - ```git clone https://github.com/josermca01/PA6-Web-grupo-kappa.git ```
 
-Tendo feito a clonagem abra o Vscode na pasta PA6-Web-grupo-kappa
+Tendo feito a clonagem abra o VScode na pasta PA6-Web-grupo-kappa
 
 Com a pasta aberta no Vscode abrir um novo terminal e executar o seguinte comando
 - ```npm run dev```
+
+Para que o server reinicie digite:
+- ```rs```
+  
+no terminal do VScode
 
 Feito isso o servidor do jogo irá abrir na porta localhost:3000
 <br>
