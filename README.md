@@ -12,7 +12,12 @@ Clonar o repositorio do projeto.
 
 Tendo feito a clonagem abra o VScode na pasta PA6-Web-grupo-kappa
 
-Com a pasta aberta no Vscode abrir um novo terminal e executar o seguinte comando
+Com a pasta aberta no VScode abrir um novo terminal e executar o seguinte comando
+
+- ```npm start```
+
+Ou o comando
+
 - ```npm run dev```
 
 Para que o server reinicie digite:
@@ -94,4 +99,4 @@ Para o lado do servidor utilizaremos:
 
 
 - Node.js, um ambiente de execução em JavaScript voltada ao lado de servidor.
-
+- Socket.IO, para a realização do modo multiplayer.
